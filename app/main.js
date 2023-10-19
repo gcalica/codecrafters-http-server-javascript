@@ -22,7 +22,7 @@ const server = net.createServer((socket) => {
       const response =
         `${protocol} ${RESPONSE_OK}${CRLF}` +
         `Content-Type: text/plain${CRLF}` +
-        `Content-Length: ${contentLength}${CRLF}` +
+        `Content-Length: ${contentLength}${CRLF.repeat(2)}` +
         `${contentToSend}${CRLF}`;
 
       console.log(response);
