@@ -13,6 +13,7 @@ const server = net.createServer((socket) => {
     const path = startLine[1];
     // const httpVersion = startLine[2];
 
+    console.log(httpRequest + "\n" + startLine + "\n" + path);
     if (path === "/") {
       socket.write("HTTP/1.1 200 OK\r\n\r\n");
     } else {
