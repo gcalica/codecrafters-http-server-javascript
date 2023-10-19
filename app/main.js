@@ -7,7 +7,7 @@ console.log("Logs from your program will appear here!");
 const server = net.createServer((socket) => {
   // Read data from connection
   socket.on("data", (data) => {
-    const CRLF = "\r\n\r\n";
+    const CRLF = "\r\n";
     const RESPONSE_OK = "200 OK";
     const RESPONSE_NOT_FOUND = "404 Not Found";
 
