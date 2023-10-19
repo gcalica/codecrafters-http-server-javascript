@@ -8,22 +8,28 @@ const server = net.createServer((socket) => {
   // Read data from connection
   socket.on("data", (data) => {
     const CRLF = "\r\n\r\n";
-    const { method, path, protocol } = processHttpRequest(data);
+    const RESPONSE_OK = "200 OK";
+    const RESPONSE_NOT_FOUND = "404 Not Found";
 
-    if (method === "GET") {
-      const urlParams = path.split("/");
-      const contentToSend = urlParams[1];
+    const { method, path, protocol } = processHttpRequest(data);
+    const urlParams = path.split("/");
+    const apiMethod = urlParams[1];
+
+    if (method === "GET" && apiMethod === "echo") {
+      const contentToSend = urlParams[2];
       const contentLength = contentToSend.length;
 
       console.log(urlParams);
       const response =
-        `${protocol} 200 OK ${CRLF}` +
+        `${protocol} ${RESPONSE_OK} ${CRLF}` +
         `Content-Type: text/plain${CRLF}` +
         `Content-Length: ${contentLength}${CRLF}` +
         `${contentToSend}${CRLF}`;
 
       console.log(response);
       socket.write(response);
+    } else {
+      socket.write(`${protocol} ${RESPONSE_NOT_FOUND} ${CRLF}`);
     }
     socket.end();
   });
