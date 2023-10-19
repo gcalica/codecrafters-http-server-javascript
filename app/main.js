@@ -20,7 +20,7 @@ const server = net.createServer((socket) => {
       const contentLength = contentToSend.length;
 
       const response =
-        `${protocol} ${RESPONSE_OK} ${CRLF}` +
+        `${protocol} ${RESPONSE_OK}${CRLF}` +
         `Content-Type: text/plain${CRLF}` +
         `Content-Length: ${contentLength}${CRLF}` +
         `${contentToSend}${CRLF}`;
