@@ -7,8 +7,17 @@ console.log("Logs from your program will appear here!");
 const server = net.createServer((socket) => {
   // Read data from connection
   socket.on("data", (data) => {
-    console.log(data);
-    socket.write("HTTP/1.1 200 OK\r\n\r\n");
+    const httpRequest = data.toString().split("\r\n");
+    const startLine = httpRequest[0].split(" ");
+    // const httpMethod = startLine[0];
+    const path = startLine[1];
+    // const httpVersion = startLine[2];
+
+    if (path === "/") {
+      socket.write("HTTP/1.1 200 OK\r\n\r\n");
+    } else {
+      socket.write("HTTP/1.1 400 Not Found");
+    }
     socket.end();
   });
 
