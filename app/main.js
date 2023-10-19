@@ -8,6 +8,7 @@ const server = net.createServer((socket) => {
   // Read data from connection
   socket.on("data", () => {
     socket.write("HTTP/1.1 200 OK\r\n\r\n");
+    socket.end();
   });
 
   socket.on("close", () => {
