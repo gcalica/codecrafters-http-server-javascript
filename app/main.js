@@ -21,6 +21,7 @@ const server = net.createServer((socket) => {
       console.log("404");
       socket.write("HTTP/1.1 404 Not Found");
     }
+    socket.end();
   });
 
   socket.on("close", () => {
