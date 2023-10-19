@@ -13,13 +13,13 @@ const server = net.createServer((socket) => {
     const path = startLine[1];
     // const httpVersion = startLine[2];
 
-    console.log(httpRequest + "\n" + startLine + "\n" + path);
+    // console.log(httpRequest + "\n" + startLine + "\n" + path);
     if (path === "/") {
-      console.log("200");
+      // console.log("200");
       socket.write("HTTP/1.1 200 OK\r\n\r\n");
     } else {
-      console.log("404");
-      socket.write("HTTP/1.1 404 Not Found");
+      // console.log("404");
+      socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
     }
     socket.end();
   });
