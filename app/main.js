@@ -29,7 +29,7 @@ const server = net.createServer((socket) => {
       console.log(response);
       socket.write(response);
     } else {
-      socket.write(`${protocol} ${RESPONSE_NOT_FOUND} ${CRLF}`);
+      socket.write(`${protocol} ${RESPONSE_NOT_FOUND} ${CRLF.repeat(2)}`);
     }
     socket.end();
   });
