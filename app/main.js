@@ -17,7 +17,11 @@ const server = net.createServer((socket) => {
 
     if (method === "GET" && path === "/") {
       socket.write(`${protocol} ${RESPONSE_OK} ${CRLF.repeat(2)}`);
-    } else if (method === "GET" && apiMethod === "echo") {
+    } else if (
+      method === "GET" &&
+      apiMethod === "echo" &&
+      urlParams.length === "3"
+    ) {
       const contentToSend = urlParams[2];
       const contentLength = contentToSend.length;
 
