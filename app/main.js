@@ -12,17 +12,11 @@ const server = net.createServer((socket) => {
     const RESPONSE_NOT_FOUND = "404 Not Found";
 
     const { method, path, protocol } = processHttpRequest(data);
-    const urlParams = path.split("/");
-    const apiMethod = urlParams[1];
 
     if (method === "GET" && path === "/") {
       socket.write(`${protocol} ${RESPONSE_OK} ${CRLF.repeat(2)}`);
-    } else if (
-      method === "GET" &&
-      apiMethod === "echo" &&
-      urlParams.length === "3"
-    ) {
-      const contentToSend = urlParams[2];
+    } else if (method === "GET" && path.startsWith("/echo/")) {
+      const contentToSend = path.substring("/echo/".length);
       const contentLength = contentToSend.length;
 
       console.log(urlParams);
