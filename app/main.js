@@ -19,7 +19,6 @@ const server = net.createServer((socket) => {
       const contentToSend = path.substring("/echo/".length);
       const contentLength = contentToSend.length;
 
-      console.log(urlParams);
       const response =
         `${protocol} ${RESPONSE_OK} ${CRLF}` +
         `Content-Type: text/plain${CRLF}` +
