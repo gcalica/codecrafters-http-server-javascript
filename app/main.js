@@ -15,11 +15,12 @@ const server = net.createServer((socket) => {
 
     console.log(httpRequest + "\n" + startLine + "\n" + path);
     if (path === "/") {
+      console.log("200");
       socket.write("HTTP/1.1 200 OK\r\n\r\n");
     } else {
+      console.log("404");
       socket.write("HTTP/1.1 404 Not Found");
     }
-    socket.end();
   });
 
   socket.on("close", () => {
