@@ -7,19 +7,20 @@ console.log("Logs from your program will appear here!");
 const server = net.createServer((socket) => {
   // Read data from connection
   socket.on("data", (data) => {
-    const httpRequest = data.toString().split("\r\n");
-    const startLine = httpRequest[0].split(" ");
-    // const httpMethod = startLine[0];
-    const path = startLine[1];
-    // const httpVersion = startLine[2];
+    const CRLF = "\r\n\r\n";
+    const { method, path, protocol } = processHttpRequest(data);
 
-    // console.log(httpRequest + "\n" + startLine + "\n" + path);
-    if (path === "/") {
-      // console.log("200");
-      socket.write("HTTP/1.1 200 OK\r\n\r\n");
-    } else {
-      // console.log("404");
-      socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
+    if (method === "GET") {
+      const urlParams = path.split("/");
+      const contentToSend = urlParams[1];
+      const contentLength = contentToSend.length;
+
+      socket.write(
+        ` ${protocol} 200 OK ${CRLF}` +
+          `Content-Type: text/plain${CRLF}` +
+          `Content-Length: ${contentLength}${CRLF}` +
+          `${contentToSend}${CRLF}`,
+      );
     }
     socket.end();
   });
@@ -31,3 +32,11 @@ const server = net.createServer((socket) => {
 });
 
 server.listen(4221, "localhost");
+
+function processHttpRequest(data) {
+  const decodedToString = data.toString();
+  const [startLine, ...headers] = decodedToString.split("\r\n");
+  const [method, path, protocol] = startLine.split(" ");
+
+  return { method, path, protocol };
+}
