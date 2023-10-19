@@ -15,12 +15,14 @@ const server = net.createServer((socket) => {
       const contentToSend = urlParams[1];
       const contentLength = contentToSend.length;
 
-      socket.write(
+      const response =
         ` ${protocol} 200 OK ${CRLF}` +
-          `Content-Type: text/plain${CRLF}` +
-          `Content-Length: ${contentLength}${CRLF}` +
-          `${contentToSend}${CRLF}`,
-      );
+        `Content-Type: text/plain${CRLF}` +
+        `Content-Length: ${contentLength}${CRLF}` +
+        `${contentToSend}${CRLF}`;
+
+      console.log(response);
+      socket.write(response);
     }
     socket.end();
   });
