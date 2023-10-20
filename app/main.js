@@ -117,7 +117,7 @@ class ResponseBuilder {
   }
 
   createResponse() {
-    console.debug("Response: \n" + response);
+    console.debug("Response: \n" + this.response);
     return this.response;
   }
 
