@@ -93,7 +93,7 @@ function processGetHttpRequest(socket, headers, path, protocol) {
       }
 
       files.forEach((file) => {
-        if (file === "filename") {
+        if (file === filename) {
           fs.readFile(directory + file, "utf8", (err, data) => {
             if (err) {
               console.error(err);
