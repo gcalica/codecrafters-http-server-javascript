@@ -22,6 +22,10 @@ const HTTP_CODE = {
 };
 
 const server = net.createServer((socket) => {
+  socket.on("close", () => {
+    socket.end();
+  });
+
   socket.on("data", (data) => {
     const HTTP_VERBS = {
       GET: "GET",
@@ -35,10 +39,6 @@ const server = net.createServer((socket) => {
       default:
         break;
     }
-    socket.end();
-  });
-
-  socket.on("close", () => {
     socket.end();
   });
 });
@@ -92,8 +92,6 @@ function processGetHttpRequest(socket, headers, path, protocol) {
           .notFound(protocol)
           .createResponse();
         socket.write(response);
-        socket.end();
-        return;
       }
 
       // const content = filedata.toString();
