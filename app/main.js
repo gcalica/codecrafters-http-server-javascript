@@ -85,12 +85,9 @@ function processGetHttpRequest(socket, headers, path, protocol) {
     socket.write(response);
   } else if (apiAction === "files") {
     const filename = path.substring("/files/".length);
-    const absPath = `${directory}${filename}`;
-    console.log("absPath " + absPath);
-    fs.readFile(absPath, (err, filedata) => {
-      console.log("Test1");
+
+    fs.readFile(`${directory}${filename}`, (err, filedata) => {
       if (err) {
-        console.log("Test2");
         const response = new ResponseBuilder()
           .notFound(protocol)
           .createResponse();
@@ -100,7 +97,6 @@ function processGetHttpRequest(socket, headers, path, protocol) {
       // const content = filedata.toString();
       const content = filedata;
       const contentLength = content.length;
-      console.log("content " + content);
 
       const response = new ResponseBuilder()
         .statusLine(protocol, HTTP_CODE.OK)
