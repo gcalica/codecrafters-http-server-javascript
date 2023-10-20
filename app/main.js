@@ -70,7 +70,6 @@ function processGetHttpRequest(socket, headers, path, protocol) {
       .content(contentToSend)
       .createResponse();
     socket.write(response);
-    socket.end();
   } else if (apiAction === "user-agent") {
     const userAgentHeader = headers.find((header) =>
       header.startsWith("User-Agent: "),
@@ -84,7 +83,6 @@ function processGetHttpRequest(socket, headers, path, protocol) {
       .content(parsedUserAgent)
       .createResponse();
     socket.write(response);
-    socket.end();
   } else if (apiAction === "files") {
     const filename = path.substring("/files/".length);
 
@@ -107,11 +105,9 @@ function processGetHttpRequest(socket, headers, path, protocol) {
         .createResponse();
       socket.write(response);
     });
-    socket.end();
   } else {
     const response = new ResponseBuilder().notFound(protocol).createResponse();
     socket.write(response);
-    socket.end();
   }
 }
 
