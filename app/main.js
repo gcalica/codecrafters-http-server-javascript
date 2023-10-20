@@ -33,8 +33,10 @@ const server = net.createServer((socket) => {
         processGetHttpRequest(socket, headers, path, protocol);
         break;
       default:
+        socket.end();
         break;
     }
+    socket.end();
   });
 
   socket.on("close", () => {
