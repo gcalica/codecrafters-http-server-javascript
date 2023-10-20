@@ -94,7 +94,6 @@ function processGetHttpRequest(socket, headers, path, protocol) {
           .notFound(protocol)
           .createResponse();
         socket.write(response);
-        return;
       }
 
       // const content = filedata.toString();
