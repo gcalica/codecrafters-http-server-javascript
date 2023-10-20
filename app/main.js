@@ -85,9 +85,7 @@ function processGetHttpRequest(socket, headers, path, protocol) {
       .createResponse();
     socket.write(response);
   } else if (apiAction === "files") {
-    console.log(directory);
     const filename = path.substring("/files/".length);
-    console.log(filename);
     const path = directory + filename;
     fs.readFile(path, (err, data) => {
       if (err) {
@@ -119,6 +117,7 @@ class ResponseBuilder {
   }
 
   createResponse() {
+    console.debug("Response: \n" + response);
     return this.response;
   }
 
