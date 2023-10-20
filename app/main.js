@@ -92,7 +92,6 @@ function processGetHttpRequest(socket, headers, path, protocol) {
           .notFound(protocol)
           .createResponse();
         socket.write(response);
-        socket.end();
       }
 
       // const content = filedata.toString();
@@ -105,7 +104,6 @@ function processGetHttpRequest(socket, headers, path, protocol) {
         .content(content)
         .createResponse();
       socket.write(response);
-      socket.end();
     });
   } else {
     const response = new ResponseBuilder().notFound(protocol).createResponse();
