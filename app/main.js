@@ -100,15 +100,18 @@ class ResponseBuilder {
 
   statusLine(protocol, statusCode) {
     this.response += `${protocol} ${statusCode}${CRLF}`;
+    return this;
   }
 
   headers(contentType, contentLength) {
     this.response +=
       `Content-Type: ${contentType}${CRLF}` +
       `Content-Length: ${contentLength}${CRLF.repeat(2)}`;
+    return this;
   }
 
   content(content) {
     this.response += `${content}${CRLF}`;
+    return this;
   }
 }
