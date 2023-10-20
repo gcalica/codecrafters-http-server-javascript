@@ -88,7 +88,7 @@ function processGetHttpRequest(socket, headers, path, protocol) {
     const filename = path.substring("/files/".length);
     const absPath = `${directory}${filename}`;
     console.log("absPath " + absPath);
-    fs.readFile(absPath, (err, filedata) => {
+    fs.readFileSync(absPath, (err, filedata) => {
       if (err) {
         const response = new ResponseBuilder()
           .notFound(protocol)
