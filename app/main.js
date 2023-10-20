@@ -95,12 +95,13 @@ function processGetHttpRequest(socket, headers, path, protocol) {
         socket.write(response);
       }
 
-      const contentLength = data.length;
+      const content = data.toString();
+      const contentLength = content.length;
 
       const response = new ResponseBuilder()
         .statusLine(protocol, HTTP_CODE.OK)
         .headers("application/octet-stream", contentLength)
-        .content(data)
+        .content(content)
         .createResponse();
       socket.write(response);
     });
