@@ -91,6 +91,7 @@ function processGetHttpRequest(socket, headers, path, protocol) {
     fs.readFile(absPath, (err, filedata) => {
       console.log("Test1");
       if (err) {
+        console.log("Test2");
         const response = new ResponseBuilder()
           .notFound(protocol)
           .createResponse();
