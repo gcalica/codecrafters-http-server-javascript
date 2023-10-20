@@ -20,6 +20,9 @@ const HTTP_CODE = {
   OK: "200 OK",
   NOT_FOUND: "404 Not Found",
 };
+const HTTP_VERBS = {
+  GET: "GET",
+};
 
 const server = net.createServer((socket) => {
   socket.on("close", () => {
@@ -28,9 +31,6 @@ const server = net.createServer((socket) => {
   });
 
   socket.on("data", (data) => {
-    const HTTP_VERBS = {
-      GET: "GET",
-    };
     const { headers, method, path, protocol } = parseHttpRequest(data);
 
     switch (method) {
