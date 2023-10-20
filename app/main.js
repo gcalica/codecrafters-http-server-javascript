@@ -97,7 +97,7 @@ function processGetHttpRequest(socket, headers, path, protocol) {
 
       const content = filedata.toString();
       const contentLength = content.length;
-      console.log(content);
+      console.log("content " + content);
 
       const response = new ResponseBuilder()
         .statusLine(protocol, HTTP_CODE.OK)
