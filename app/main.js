@@ -1,20 +1,27 @@
 const net = require("net");
+const fs = require("fs");
 
 // You can use print statements as follows for debugging, they'll be visible when running tests.
 console.log("Logs from your program will appear here!");
 
+// -------------------- ARGS  -------------------
+const args = process.argv.slice(2); // trim first two elements (node, app/main.js)
+let directory;
+
+if (args.length > 0) {
+  if (args[0] === "--directory") {
+    directory = args[1];
+  }
+}
+
+// -------------------- SERVER  -------------------
 const CRLF = "\r\n";
 const HTTP_CODE = {
   OK: "200 OK",
   NOT_FOUND: "404 Not Found",
 };
 
-const RESPONSE_OK = "200 OK";
-const RESPONSE_NOT_FOUND = "404 Not Found";
-
-// Uncomment this to pass the first stage
 const server = net.createServer((socket) => {
-  // Read data from connection
   socket.on("data", (data) => {
     const HTTP_VERBS = {
       GET: "GET",
@@ -39,6 +46,7 @@ const server = net.createServer((socket) => {
 
 server.listen(4221, "localhost");
 
+// -------------------- HELPER FUNCTIONS -------------------
 function parseHttpRequest(data) {
   const decodedToString = data.toString();
   const [startLine, ...headers] = decodedToString.split("\r\n");
@@ -52,7 +60,7 @@ function processGetHttpRequest(socket, headers, path, protocol) {
   const apiAction = urlParams[0];
 
   if (path === "/") {
-    socket.write(`${protocol} ${RESPONSE_OK} ${CRLF.repeat(2)}`);
+    socket.write(`${protocol} ${HTTP_CODE.OK} ${CRLF.repeat(2)}`);
   } else if (apiAction === "echo") {
     const contentToSend = path.substring("/echo/".length);
     const contentLength = contentToSend.length;
@@ -76,8 +84,39 @@ function processGetHttpRequest(socket, headers, path, protocol) {
       .content(parsedUserAgent)
       .createResponse();
     socket.write(response);
+  } else if (apiAction === "files") {
+    const filename = path.substring("/files/".length);
+    fs.readdir(directory, (err, files) => {
+      if (err) {
+        console.error("Unable to scan directory: " + err);
+        return;
+      }
+
+      files.forEach((file) => {
+        if (file === "filename") {
+          fs.readFile(directory + file, "utf8", (err, data) => {
+            if (err) {
+              console.error(err);
+              return;
+            }
+
+            const contentLength = data.length;
+
+            const response = new ResponseBuilder()
+              .statusLine(protocol, HTTP_CODE.OK)
+              .headers("application/octet-stream", contentLength)
+              .content(data)
+              .createResponse();
+            socket.write(response);
+            return;
+          });
+        }
+      });
+
+      socket.write(`${protocol} ${HTTP_CODE.NOT_FOUND} ${CRLF.repeat(2)}`);
+    });
   } else {
-    socket.write(`${protocol} ${RESPONSE_NOT_FOUND} ${CRLF.repeat(2)}`);
+    socket.write(`${protocol} ${HTTP_CODE.NOT_FOUND} ${CRLF.repeat(2)}`);
   }
 }
 
