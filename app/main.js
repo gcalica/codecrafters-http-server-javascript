@@ -88,42 +88,28 @@ function processGetHttpRequest(socket, headers, path, protocol) {
     console.log(directory);
     const filename = path.substring("/files/".length);
     console.log(filename);
-    fs.readdir(directory, (err, files) => {
+    const path = directory + filename;
+    fs.readFile(path, (err, data) => {
       if (err) {
-        console.error("Unable to scan directory: " + err);
-        return;
+        const response = new ResponseBuilder()
+          .notFound(protocol)
+          .createResponse();
+        socket.write(response);
       }
 
-      files.forEach((file) => {
-        console.log(file);
-        if (file === filename) {
-          const path = directory + file;
-          console.log(path);
-          fs.readFile(path, "utf8", (err, data) => {
-            if (err) {
-              console.error(err);
-              return;
-            }
+      const contentLength = data.lenght;
 
-            console.log(data);
-            const contentLength = data.length;
-
-            const response = new ResponseBuilder()
-              .statusLine(protocol, HTTP_CODE.OK)
-              .headers("application/octet-stream", contentLength)
-              .content(data)
-              .createResponse();
-            console.log(response);
-            socket.write(response);
-            return;
-          });
-        }
-      });
-
-      socket.write(`${protocol} ${HTTP_CODE.NOT_FOUND} ${CRLF.repeat(2)}`);
+      const response = new ResponseBuilder()
+        .statusLine(protocol, HTTP_CODE.OK)
+        .headers("application/octet-stream", contentLength)
+        .content(data)
+        .createResponse();
+      socket.write(response);
     });
   } else {
-    socket.write(`${protocol} ${HTTP_CODE.NOT_FOUND} ${CRLF.repeat(2)}`);
+    // socket.write(`${protocol} ${HTTP_CODE.NOT_FOUND} ${CRLF.repeat(2)}`);
+    const response = new ResponseBuilder().notFound(protocol).createResponse();
+    socket.write(response);
   }
 }
 
@@ -150,6 +136,11 @@ class ResponseBuilder {
 
   content(content) {
     this.response += `${content}${CRLF}`;
+    return this;
+  }
+
+  notFound(protocol) {
+    this.response += this.statusLine(protocol, HTTP_CODE.NOT_FOUND) + CRLF;
     return this;
   }
 }
