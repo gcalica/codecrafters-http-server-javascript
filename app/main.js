@@ -18,7 +18,7 @@ const server = net.createServer((socket) => {
 
     switch (method) {
       case HTTP_VERBS.GET:
-        processGetHttpRequest(headers, path, protocol);
+        processGetHttpRequest(socket, headers, path, protocol);
         break;
       default:
         break;
@@ -42,7 +42,7 @@ function parseHttpRequest(data) {
   return { headers, method, path, protocol };
 }
 
-function processGetHttpRequest(headers, path, protocol) {
+function processGetHttpRequest(socket, headers, path, protocol) {
   const urlParams = path.substring(1).split("/");
   const apiAction = urlParams[0];
 
