@@ -72,6 +72,7 @@ function processGetHttpRequest(socket, headers, path, protocol) {
     );
     console.log(userAgentHeader);
     const parsedUserAgent = userAgentHeader.split(" ")[1];
+    console.log(parsedUserAgent);
 
     const contentLength = parsedUserAgent.length;
 
