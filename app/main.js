@@ -110,6 +110,7 @@ function processGetHttpRequest(socket, headers, path, protocol) {
     const response = new ResponseBuilder().notFound(protocol).createResponse();
     socket.write(response);
   }
+  socket.end();
 }
 
 class ResponseBuilder {
