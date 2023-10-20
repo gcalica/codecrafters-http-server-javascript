@@ -5,7 +5,6 @@ const fs = require("fs");
 console.log("Logs from your program will appear here!");
 
 // -------------------- ARGS  -------------------
-console.log(process.argv);
 const args = process.argv.slice(2); // trim first two elements (node, app/main.js)
 let directory;
 
@@ -89,7 +88,8 @@ function processGetHttpRequest(socket, headers, path, protocol) {
     const filename = path.substring("/files/".length);
     const absPath = `${directory}${filename}`;
     console.log("absPath " + absPath);
-    fs.readFileSync(absPath, (err, filedata) => {
+    fs.readFile(absPath, (err, filedata) => {
+      console.log("Test1");
       if (err) {
         const response = new ResponseBuilder()
           .notFound(protocol)
