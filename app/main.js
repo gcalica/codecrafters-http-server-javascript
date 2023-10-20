@@ -67,7 +67,9 @@ function processGetHttpRequest(socket, headers, path, protocol) {
     socket.write(response);
   } else if (apiAction === "user-agent") {
     console.log(headers);
-    const userAgentHeaderIndex = headers.indexOf("User-Agent: ");
+    const userAgentHeaderIndex = headers.find((header) =>
+      header.startsWith("User-Agent: "),
+    );
     console.log(userAgentHeaderIndex);
     const userAgentHeader = headers[userAgentHeaderIndex];
     console.log(userAgentHeader);
