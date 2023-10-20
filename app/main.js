@@ -86,17 +86,10 @@ function processGetHttpRequest(socket, headers, path, protocol) {
     socket.write(response);
   } else if (apiAction === "files") {
     const filename = path.substring("/files/".length);
+    const absPath = `${directory}${filename}`;
 
-    fs.readFileSync(`${directory}${filename}`, (err, filedata) => {
-      if (err) {
-        const response = new ResponseBuilder()
-          .notFound(protocol)
-          .createResponse();
-        socket.write(response);
-      }
-
-      // const content = filedata.toString();
-      const content = filedata;
+    if (fs.existsSync(absPath)) {
+      const content = fs.readFileSync(absPath);
       const contentLength = content.length;
 
       const response = new ResponseBuilder()
@@ -105,7 +98,12 @@ function processGetHttpRequest(socket, headers, path, protocol) {
         .content(content)
         .createResponse();
       socket.write(response);
-    });
+    } else {
+      const response = new ResponseBuilder()
+        .notFound(protocol)
+        .createResponse();
+      socket.write(response);
+    }
   } else {
     const response = new ResponseBuilder().notFound(protocol).createResponse();
     socket.write(response);
