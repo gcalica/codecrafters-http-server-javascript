@@ -87,7 +87,6 @@ function processGetHttpRequest(socket, headers, path, protocol) {
     const filename = path.substring("/files/".length);
 
     fs.readFileSync(`${directory}${filename}`, (err, filedata) => {
-      console.log(err);
       if (err) {
         const response = new ResponseBuilder()
           .notFound(protocol)
@@ -106,6 +105,7 @@ function processGetHttpRequest(socket, headers, path, protocol) {
         .createResponse();
       socket.write(response);
     });
+    socket.end();
   } else {
     const response = new ResponseBuilder().notFound(protocol).createResponse();
     socket.write(response);
