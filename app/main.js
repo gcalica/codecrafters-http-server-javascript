@@ -40,7 +40,7 @@ const server = net.createServer((socket) => {
 
   socket.on("close", () => {
     socket.end();
-    server.close();
+    // server.close();
   });
 });
 
@@ -87,6 +87,7 @@ function processGetHttpRequest(socket, headers, path, protocol) {
   } else if (apiAction === "files") {
     const filename = path.substring("/files/".length);
     const absPath = `${directory}${filename}`;
+    console.log("absPath " + absPath);
     fs.readFile(absPath, (err, filedata) => {
       if (err) {
         const response = new ResponseBuilder()
@@ -107,9 +108,9 @@ function processGetHttpRequest(socket, headers, path, protocol) {
         .content(content)
         .createResponse();
       socket.write(response);
+      socket.end();
     });
   } else {
-    // socket.write(`${protocol} ${HTTP_CODE.NOT_FOUND} ${CRLF.repeat(2)}`);
     const response = new ResponseBuilder().notFound(protocol).createResponse();
     socket.write(response);
   }
