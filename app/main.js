@@ -78,6 +78,9 @@ function processGetHttpRequest(socket, headers, path, protocol) {
       .headers("text/plain", contentLength)
       .content(parsedUserAgent)
       .createResponse();
+
+    console.log(response);
+    socket.write(response);
   } else {
     socket.write(`${protocol} ${RESPONSE_NOT_FOUND} ${CRLF.repeat(2)}`);
   }
