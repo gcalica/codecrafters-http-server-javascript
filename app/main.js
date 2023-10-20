@@ -57,23 +57,17 @@ function processGetHttpRequest(socket, headers, path, protocol) {
     const contentToSend = path.substring("/echo/".length);
     const contentLength = contentToSend.length;
 
-    const response =
-      `${protocol} ${RESPONSE_OK}${CRLF}` +
-      `Content-Type: text/plain${CRLF}` +
-      `Content-Length: ${contentLength}${CRLF.repeat(2)}` +
-      `${contentToSend}${CRLF}`;
-
-    console.log(response);
+    const response = new ResponseBuilder()
+      .statusLine(protocol, HTTP_CODE.OK)
+      .headers("text/plain", contentLength)
+      .content(contentToSend)
+      .createResponse();
     socket.write(response);
   } else if (apiAction === "user-agent") {
-    console.log(headers);
     const userAgentHeader = headers.find((header) =>
       header.startsWith("User-Agent: "),
     );
-    console.log(userAgentHeader);
     const parsedUserAgent = userAgentHeader.split(" ")[1];
-    console.log(parsedUserAgent);
-
     const contentLength = parsedUserAgent.length;
 
     const response = new ResponseBuilder()
@@ -81,8 +75,6 @@ function processGetHttpRequest(socket, headers, path, protocol) {
       .headers("text/plain", contentLength)
       .content(parsedUserAgent)
       .createResponse();
-
-    console.log(response);
     socket.write(response);
   } else {
     socket.write(`${protocol} ${RESPONSE_NOT_FOUND} ${CRLF.repeat(2)}`);
