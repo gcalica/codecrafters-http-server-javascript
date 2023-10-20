@@ -35,12 +35,10 @@ const server = net.createServer((socket) => {
       default:
         break;
     }
-    socket.end();
   });
 
   socket.on("close", () => {
     socket.end();
-    server.close();
   });
 });
 
