@@ -95,6 +95,7 @@ function processGetHttpRequest(socket, headers, path, protocol) {
       }
 
       files.forEach((file) => {
+        console.log(file);
         if (file === filename) {
           const path = directory + file;
           console.log(path);
