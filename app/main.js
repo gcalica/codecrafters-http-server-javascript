@@ -27,15 +27,13 @@ const server = net.createServer((socket) => {
       let fileName = path[1].slice(7);
       let filePath = `${dir}${fileName}`;
 
-      try {
-        if (fs.existsSync(filePath)) {
-          let data = fs.readFileSync(filePath, "utf-8");
+      if (fs.existsSync(filePath)) {
+        let data = fs.readFileSync(filePath, "utf-8");
 
-          socket.write(
-            `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${data.length}\r\n\r\n${data}`,
-          );
-        }
-      } catch (err) {
+        socket.write(
+          `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${data.length}\r\n\r\n${data}`,
+        );
+      } else {
         socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
       }
     } else {
