@@ -141,7 +141,7 @@ class ResponseBuilder {
   }
 
   notFound(protocol) {
-    this.response += `${protocol} ${statusCode}${CRLF}${CRLF}`;
+    this.response += `${protocol} ${HTTP_CODE.NOT_FOUND}${CRLF}${CRLF}`;
     return this;
   }
 }
