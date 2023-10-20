@@ -87,10 +87,8 @@ function processGetHttpRequest(socket, headers, path, protocol) {
   } else if (apiAction === "files") {
     const filename = path.substring("/files/".length);
     const absPath = `${directory}${filename}`;
-    console.log(absPath);
     fs.readFile(absPath, (err, filedata) => {
       if (err) {
-        console.log("Test");
         const response = new ResponseBuilder()
           .notFound(protocol)
           .createResponse();
@@ -98,8 +96,8 @@ function processGetHttpRequest(socket, headers, path, protocol) {
         return;
       }
 
-      console.log("T1est");
-      const content = filedata.toString();
+      // const content = filedata.toString();
+      const content = data;
       const contentLength = content.length;
       console.log("content " + content);
 
