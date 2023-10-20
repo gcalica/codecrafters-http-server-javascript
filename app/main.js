@@ -89,10 +89,12 @@ function processGetHttpRequest(socket, headers, path, protocol) {
     const absPath = `${directory}${filename}`;
     fs.readFile(absPath, (err, filedata) => {
       if (err) {
+        console.log("Test");
         const response = new ResponseBuilder()
           .notFound(protocol)
           .createResponse();
         socket.write(response);
+        return;
       }
 
       const content = filedata.toString();
