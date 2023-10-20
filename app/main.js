@@ -4,6 +4,11 @@ const net = require("net");
 console.log("Logs from your program will appear here!");
 
 const CRLF = "\r\n";
+const HTTP_CODE = {
+  OK: "200 OK",
+  NOT_FOUND: "404 Not Found",
+};
+
 const RESPONSE_OK = "200 OK";
 const RESPONSE_NOT_FOUND = "404 Not Found";
 
@@ -62,7 +67,42 @@ function processGetHttpRequest(socket, headers, path, protocol) {
     socket.write(response);
   } else if (apiAction === "user-agent") {
     console.log(headers);
+    const userAgentHeaderIndex = headers.indexOf("User-Agent: ");
+    const userAgentHeader = headers[userAgentHeaderIndex];
+    const parsedUserAgent = userAgentHeader.split(" ")[1];
+
+    const contentLength = parsedUserAgent.length;
+
+    const response = new ResponseBuilder()
+      .statusLine(protocol, HTTP_CODE.OK)
+      .headers("text/plain", contentLength)
+      .content(parsedUserAgent)
+      .createResponse();
   } else {
     socket.write(`${protocol} ${RESPONSE_NOT_FOUND} ${CRLF.repeat(2)}`);
+  }
+}
+
+class ResponseBuilder {
+  constructor() {
+    this.response = "";
+  }
+
+  createResponse() {
+    return this.response;
+  }
+
+  statusLine(protocol, statusCode) {
+    this.response += `${protocol} ${statusCode}${CRLF}`;
+  }
+
+  headers(contentType, contentLength) {
+    this.response +=
+      `Content-Type: ${contentType}${CRLF}` +
+      `Content-Length: ${contentLength}${CRLF.repeat(2)}`;
+  }
+
+  content(content) {
+    this.response += `${content}${CRLF}`;
   }
 }
