@@ -87,7 +87,7 @@ function processGetHttpRequest(socket, headers, path, protocol) {
   } else if (apiAction === "files") {
     const filename = path.substring("/files/".length);
     const absPath = `${directory}${filename}`;
-
+    // a
     if (fs.existsSync(absPath)) {
       const content = fs.readFileSync(absPath);
       const contentLength = content.length;
