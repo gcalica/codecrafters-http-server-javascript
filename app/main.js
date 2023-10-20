@@ -97,6 +97,7 @@ function processGetHttpRequest(socket, headers, path, protocol) {
         return;
       }
 
+      console.log("T1est");
       const content = filedata.toString();
       const contentLength = content.length;
       console.log("content " + content);
