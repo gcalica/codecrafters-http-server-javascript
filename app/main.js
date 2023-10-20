@@ -5,6 +5,7 @@ const fs = require("fs");
 console.log("Logs from your program will appear here!");
 
 // -------------------- ARGS  -------------------
+console.log(process.argv);
 const args = process.argv.slice(2); // trim first two elements (node, app/main.js)
 let directory;
 
@@ -94,7 +95,6 @@ function processGetHttpRequest(socket, headers, path, protocol) {
           .notFound(protocol)
           .createResponse();
         socket.write(response);
-        throw err;
       }
 
       // const content = filedata.toString();
