@@ -86,7 +86,9 @@ function processGetHttpRequest(socket, headers, path, protocol) {
     socket.write(response);
   } else if (apiAction === "files") {
     const filename = path.substring("/files/".length);
-    fs.readFile(`${directory}/${filename}`, (err, filedata) => {
+    const absPath = `${directory}/${filename}`;
+    console.log(absPath);
+    fs.readFile(absPath, (err, filedata) => {
       if (err) {
         const response = new ResponseBuilder()
           .notFound(protocol)
