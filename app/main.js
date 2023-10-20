@@ -85,7 +85,9 @@ function processGetHttpRequest(socket, headers, path, protocol) {
       .createResponse();
     socket.write(response);
   } else if (apiAction === "files") {
+    console.log(directory);
     const filename = path.substring("/files/".length);
+    console.log(filename);
     fs.readdir(directory, (err, files) => {
       if (err) {
         console.error("Unable to scan directory: " + err);
@@ -94,12 +96,15 @@ function processGetHttpRequest(socket, headers, path, protocol) {
 
       files.forEach((file) => {
         if (file === filename) {
-          fs.readFile(directory + file, "utf8", (err, data) => {
+          const path = directory + file;
+          console.log(path);
+          fs.readFile(path, "utf8", (err, data) => {
             if (err) {
               console.error(err);
               return;
             }
 
+            console.log(data);
             const contentLength = data.length;
 
             const response = new ResponseBuilder()
@@ -107,6 +112,7 @@ function processGetHttpRequest(socket, headers, path, protocol) {
               .headers("application/octet-stream", contentLength)
               .content(data)
               .createResponse();
+            console.log(response);
             socket.write(response);
             return;
           });
