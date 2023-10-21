@@ -69,7 +69,7 @@ function parseHttpRequest(data) {
   // const [method, path, protocol] = startLine.split(" ");
   // let [headers, reqBody] = decodedToString.join("\r\n").split("\r\n\r\n");
   // headers = headers.split("\n");
-  console.log("===REQUEST: \n" + decodedToString);
+  console.log("===REQUEST: \n" + decoded);
   return { headers, method, path, protocol };
 }
 
