@@ -32,7 +32,7 @@ const server = net.createServer((socket) => {
   });
 
   socket.on("data", (data) => {
-    const { headers, method, path, protocol } = parseHttpRequest(data);
+    const { headers, body, method, path, protocol } = parseHttpRequest(data);
 
     switch (method) {
       case HTTP_VERBS.GET:
@@ -61,19 +61,11 @@ function parseHttpRequest(data) {
 
   // remote: [your_program] someBody
 
-  let startLine = decodedSplit.shift();
-  console.log("startLine: \n", startLine);
-  console.log("decodedSplit: \n", decodedSplit);
-  let [headers, body] = decodedSplit.join().split("\r\n\r\n");
-  console.log("headers: \n", headers);
-  console.log("body: \n", body);
-  // const decodedToString = data.toString().split("\r\n");
-  // const startLine = decodedToString.shift();
-  // const [method, path, protocol] = startLine.split(" ");
-  // let [headers, reqBody] = decodedToString.join("\r\n").split("\r\n\r\n");
-  // headers = headers.split("\n");
+  const startLine = decodedSplit.shift();
+  const [method, path, protocol] = startLine.split(" ");
+  const [headers, body] = decodedSplit.join().split("\r\n\r\n");
   console.log("===REQUEST: \n" + decoded);
-  return { headers, method, path, protocol };
+  return { headers, body, method, path, protocol };
 }
 
 function processGetHttpRequest(socket, headers, path, protocol) {
