@@ -51,15 +51,12 @@ server.listen(4221, "localhost");
 
 // -------------------- HELPER FUNCTIONS -------------------
 function parseHttpRequest(data) {
-  const decodedToString = data.toString().split("\r\n");
-  const startLine = decodedToString.shift();
-  const [method, path, protocol] = startLine.split(" ");
-  let [headers, reqBody] = decodedToString.join("\r\n").split("\r\n\r\n");
-  console.log("1 " + headers);
-  console.log("2 " + reqBody);
-  headers = headers.split("\n");
-  console.log("3 " + headers);
-  console.log("4 " + reqBody);
+  console.log(data);
+  // const decodedToString = data.toString().split("\r\n");
+  // const startLine = decodedToString.shift();
+  // const [method, path, protocol] = startLine.split(" ");
+  // let [headers, reqBody] = decodedToString.join("\r\n").split("\r\n\r\n");
+  // headers = headers.split("\n");
   console.log("===REQUEST: \n" + decodedToString);
   return { headers, method, path, protocol };
 }
