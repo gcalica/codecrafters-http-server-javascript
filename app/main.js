@@ -135,17 +135,17 @@ function processPostHttpRequest(socket, body, path, protocol) {
 
     try {
       fs.writeFileSync(absPath, body);
+
+      const response = new ResponseBuilder()
+        .statusLine(protocol, HTTP_CODE.CREATED)
+        .createResponse();
+      socket.write(response);
     } catch (err) {
       const response = new ResponseBuilder()
         .notFound(protocol)
         .createResponse();
       socket.write(response);
     }
-
-    const response = new ResponseBuilder()
-      .statusLine(protocol, HTTP_CODE.CREATED)
-      .createResponse();
-    socket.write(response);
   } else {
     const response = new ResponseBuilder().notFound(protocol).createResponse();
     socket.write(response);
