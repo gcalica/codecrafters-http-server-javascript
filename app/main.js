@@ -55,7 +55,7 @@ function parseHttpRequest(data) {
   const [startLine, ...headers] = decodedToString.split("\r\n");
   const [method, path, protocol] = startLine.split(" ");
 
-  console.log(decodedToString)
+  console.log(decodedToString);
   return { headers, method, path, protocol };
 }
 
@@ -88,7 +88,8 @@ function processGetHttpRequest(socket, headers, path, protocol) {
       .content(parsedUserAgent)
       .createResponse();
     socket.write(response);
-  } else if (apiAction === "files") { const filename = path.substring("/files/".length);
+  } else if (apiAction === "files") {
+    const filename = path.substring("/files/".length);
     const absPath = `${directory}${filename}`;
 
     if (fs.existsSync(absPath)) {
@@ -119,8 +120,7 @@ function processPostHttpRequest(socket, headers, path, protocol) {
   const apiAction = urlParams[0];
 
   if (apiAction === "files") {
-    const content = 
-
+    // const content =
   } else {
     const response = new ResponseBuilder().notFound(protocol).createResponse();
     socket.write(response);
