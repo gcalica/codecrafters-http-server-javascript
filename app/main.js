@@ -129,26 +129,26 @@ function processPostHttpRequest(socket, body, path, protocol) {
   const urlParams = path.substring(1).split("/");
   const apiAction = urlParams[0];
 
-  // if (apiAction === "files") {
-  const filename = path.substring("/files/".length);
+  if (apiAction === "files") {
+    const filename = path.substring("/files/".length);
 
-  // try {
-  fs.writeFileSync(`${directory}${filename}`, body);
-
-  const response = new ResponseBuilder()
-    .statusLine(protocol, HTTP_CODE.CREATED)
-    .createResponse();
-  socket.write(response);
-  // } catch (err) {
-  //   const response = new ResponseBuilder()
-  //     .notFound(protocol)
-  //     .createResponse();
-  //   socket.write(response);
-  // }
-  // } else {
-  //   const response = new ResponseBuilder().notFound(protocol).createResponse();
-  //   socket.write(response);
-  // }
+    fs.writeFileSync(`${directory}${filename}`, body, (err) => {
+      if (err) {
+        const response = new ResponseBuilder()
+          .notFound(protocol)
+          .createResponse();
+        socket.write(response);
+      } else {
+        const response = new ResponseBuilder()
+          .statusLine(protocol, HTTP_CODE.CREATED)
+          .createResponse();
+        socket.write(response);
+      }
+    });
+  } else {
+    const response = new ResponseBuilder().notFound(protocol).createResponse();
+    socket.write(response);
+  }
 }
 
 class ResponseBuilder {
