@@ -125,7 +125,7 @@ function processGetHttpRequest(socket, headers, path, protocol) {
   socket.end();
 }
 
-async function processPostHttpRequest(socket, body, path, protocol) {
+function processPostHttpRequest(socket, body, path, protocol) {
   const urlParams = path.substring(1).split("/");
   const apiAction = urlParams[0];
 
@@ -137,19 +137,19 @@ async function processPostHttpRequest(socket, body, path, protocol) {
     console.log(filename);
     console.log(absPath);
     console.log(body);
-    try {
-      await fs.writeFileSync(absPath, body);
+    // try {
+    fs.writeFileSync(absPath, body);
 
-      const response = new ResponseBuilder()
-        .statusLine(protocol, HTTP_CODE.CREATED)
-        .createResponse();
-      socket.write(response);
-    } catch (err) {
-      const response = new ResponseBuilder()
-        .notFound(protocol)
-        .createResponse();
-      socket.write(response);
-    }
+    const response = new ResponseBuilder()
+      .statusLine(protocol, HTTP_CODE.CREATED)
+      .createResponse();
+    socket.write(response);
+    // } catch (err) {
+    //   const response = new ResponseBuilder()
+    //     .notFound(protocol)
+    //     .createResponse();
+    //   socket.write(response);
+    // }
   } else {
     const response = new ResponseBuilder().notFound(protocol).createResponse();
     socket.write(response);
