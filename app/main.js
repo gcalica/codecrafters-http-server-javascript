@@ -138,6 +138,7 @@ function processPostHttpRequest(socket, body, path, protocol) {
           .notFound(protocol)
           .createResponse();
         socket.write(response);
+        return;
       } else {
         const response = new ResponseBuilder()
           .statusLine(protocol, HTTP_CODE.CREATED)
