@@ -53,7 +53,6 @@ server.listen(4221, "localhost");
 function parseHttpRequest(data) {
   const decoded = data.toString();
   const decodedSplit = decoded.split("\r\n");
-  console.log(decodedSplit);
 
   const startLine = decodedSplit.shift();
   const [method, path, protocol] = startLine.split(" ");
@@ -64,6 +63,8 @@ function parseHttpRequest(data) {
   } else {
     headers = decodedSplit;
   }
+
+  console.log(body);
   console.log("===REQUEST: \n" + decoded);
   return { headers, body, method, path, protocol };
 }
