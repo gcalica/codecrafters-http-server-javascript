@@ -53,17 +53,12 @@ server.listen(4221, "localhost");
 function parseHttpRequest(data) {
   const decoded = data.toString();
   const decodedSplit = decoded.split("\r\n");
-  // remote: [your_program] GET / HTTP/1.1
-
-  // remote: [your_program] Host: localhost:4221
-  // remote: [your_program] User-Agent: Go-http-client/1.1
-  // remote: [your_program] Accept-Encoding: gzip
-
-  // remote: [your_program] someBody
 
   const startLine = decodedSplit.shift();
   const [method, path, protocol] = startLine.split(" ");
+  console.log("d ", decodedSplit);
   const [headers, body] = decodedSplit.join().split("\r\n\r\n");
+  console.log("h ", headers);
   console.log("===REQUEST: \n" + decoded);
   return { headers, body, method, path, protocol };
 }
