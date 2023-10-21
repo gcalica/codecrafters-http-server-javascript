@@ -53,7 +53,6 @@ server.listen(4221, "localhost");
 function parseHttpRequest(data) {
   const decoded = data.toString();
   const decodedSplit = decoded.split("\r\n");
-  console.log(decoded);
   // remote: [your_program] GET / HTTP/1.1
 
   // remote: [your_program] Host: localhost:4221
@@ -62,7 +61,8 @@ function parseHttpRequest(data) {
 
   // remote: [your_program] someBody
 
-  let startLine;
+  let startLine = decodedSplit.shift();
+  console.log("startLine: \n", startLine);
   let headers;
   let body;
   // const decodedToString = data.toString().split("\r\n");
