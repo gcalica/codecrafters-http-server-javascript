@@ -61,9 +61,9 @@ function parseHttpRequest(data) {
 
   // remote: [your_program] someBody
 
-  const startLine;
-  const headers;
-  const body;
+  let startLine;
+  let headers;
+  let body;
   // const decodedToString = data.toString().split("\r\n");
   // const startLine = decodedToString.shift();
   // const [method, path, protocol] = startLine.split(" ");
