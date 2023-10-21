@@ -51,8 +51,19 @@ server.listen(4221, "localhost");
 
 // -------------------- HELPER FUNCTIONS -------------------
 function parseHttpRequest(data) {
-  const decoded = data.toString();
+  const decoded = data.toString().split("\r\n");
   console.log(decoded);
+  // remote: [your_program] GET / HTTP/1.1
+
+  // remote: [your_program] Host: localhost:4221
+  // remote: [your_program] User-Agent: Go-http-client/1.1
+  // remote: [your_program] Accept-Encoding: gzip
+
+  // remote: [your_program] someBody
+
+  const startLine;
+  const headers;
+  const body;
   // const decodedToString = data.toString().split("\r\n");
   // const startLine = decodedToString.shift();
   // const [method, path, protocol] = startLine.split(" ");
