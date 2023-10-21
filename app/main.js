@@ -29,7 +29,7 @@ const HTTP_VERBS = {
 const server = net.createServer((socket) => {
   socket.on("close", () => {
     socket.end();
-    // server.close();
+    server.close();
   });
 
   socket.on("data", (data) => {
@@ -131,14 +131,9 @@ function processPostHttpRequest(socket, body, path, protocol) {
 
   if (apiAction === "files") {
     const filename = path.substring("/files/".length);
-    const absPath = `${directory}${filename}`;
 
-    console.log("====");
-    console.log(filename);
-    console.log(absPath);
-    console.log(body);
     // try {
-    fs.writeFileSync(absPath, body);
+    fs.writeFileSync(`${directory}${filename}`, body);
 
     const response = new ResponseBuilder()
       .statusLine(protocol, HTTP_CODE.CREATED)
