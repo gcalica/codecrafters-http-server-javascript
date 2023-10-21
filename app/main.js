@@ -133,7 +133,7 @@ function processPostHttpRequest(socket, body, path, protocol) {
   if (apiAction === "files") {
     const filename = path.substring("/files/".length);
 
-    fs.writeFileSync(`${directory}${filename}`, body, (err) => {
+    fs.writeFile(`${directory}${filename}`, body, (err) => {
       if (err) {
         const response = new ResponseBuilder()
           .statusLine(protocol, HTTP_CODE.ERROR)
