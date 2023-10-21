@@ -20,6 +20,7 @@ const HTTP_CODE = {
   OK: "200 OK",
   CREATED: "201 Created",
   NOT_FOUND: "404 Not Found",
+  ERROR: "500 Internal Server Error",
 };
 const HTTP_VERBS = {
   GET: "GET",
@@ -135,7 +136,7 @@ function processPostHttpRequest(socket, body, path, protocol) {
     fs.writeFileSync(`${directory}${filename}`, body, (err) => {
       if (err) {
         const response = new ResponseBuilder()
-          .notFound(protocol)
+          .statusLine(protocol, HTTP_CODE.ERROR)
           .createResponse();
         socket.write(response);
       }
