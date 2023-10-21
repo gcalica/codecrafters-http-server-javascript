@@ -51,11 +51,13 @@ server.listen(4221, "localhost");
 
 // -------------------- HELPER FUNCTIONS -------------------
 function parseHttpRequest(data) {
-  const decodedToString = data.toString();
-  const [startLine, ...headers] = decodedToString.split("\r\n");
+  const decodedToString = data.toString().split("\r\n");
+  const startLine = decodedToString.shift();
   const [method, path, protocol] = startLine.split(" ");
+  const [headers, reqBody] = decodedToString.split("\r\n\r\n");
 
   console.log(headers);
+  console.log(reqBody);
   console.log("REQUEST: \n" + decodedToString);
   return { headers, method, path, protocol };
 }
