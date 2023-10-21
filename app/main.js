@@ -125,7 +125,7 @@ function processGetHttpRequest(socket, headers, path, protocol) {
   socket.end();
 }
 
-function processPostHttpRequest(socket, body, path, protocol) {
+async function processPostHttpRequest(socket, body, path, protocol) {
   const urlParams = path.substring(1).split("/");
   const apiAction = urlParams[0];
 
@@ -138,7 +138,7 @@ function processPostHttpRequest(socket, body, path, protocol) {
     console.log(absPath);
     console.log(body);
     try {
-      fs.writeFileSync(absPath, body);
+      await fs.writeFileSync(absPath, body);
 
       const response = new ResponseBuilder()
         .statusLine(protocol, HTTP_CODE.CREATED)
