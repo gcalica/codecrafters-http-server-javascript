@@ -18,6 +18,7 @@ if (args.length > 0) {
 const CRLF = "\r\n";
 const HTTP_CODE = {
   OK: "200 OK",
+  CREATED: "201 Created",
   NOT_FOUND: "404 Not Found",
 };
 const HTTP_VERBS = {
@@ -39,7 +40,7 @@ const server = net.createServer((socket) => {
         processGetHttpRequest(socket, headers, path, protocol);
         break;
       case HTTP_VERBS.POST:
-        processPostHttpRequest(socket, headers, path, protocol);
+        processPostHttpRequest(socket, body, path, protocol);
       default:
         break;
     }
@@ -64,7 +65,6 @@ function parseHttpRequest(data) {
     headers = decodedSplit;
   }
 
-  console.log(body);
   console.log("===REQUEST: \n" + decoded);
   return { headers, body, method, path, protocol };
 }
@@ -86,7 +86,6 @@ function processGetHttpRequest(socket, headers, path, protocol) {
       .createResponse();
     socket.write(response);
   } else if (apiAction === "user-agent") {
-    console.log("headers: \n ", headers);
     const userAgentHeader = headers.find((header) =>
       header.startsWith("User-Agent: "),
     );
@@ -126,12 +125,20 @@ function processGetHttpRequest(socket, headers, path, protocol) {
   socket.end();
 }
 
-function processPostHttpRequest(socket, headers, path, protocol) {
+function processPostHttpRequest(socket, body, path, protocol) {
   const urlParams = path.substring(1).split("/");
   const apiAction = urlParams[0];
 
   if (apiAction === "files") {
-    // const content =
+    const filename = path.substring("/files/".length);
+    const absPath = `${directory}${filename}`;
+
+    fs.writeFileSync(absPath, body);
+
+    const response = new ResponseBuilder()
+      .statusLine(protocol, HTTP_CODE.CREATED)
+      .createResponse();
+    socket.write(response);
   } else {
     const response = new ResponseBuilder().notFound(protocol).createResponse();
     socket.write(response);
