@@ -51,7 +51,8 @@ server.listen(4221, "localhost");
 
 // -------------------- HELPER FUNCTIONS -------------------
 function parseHttpRequest(data) {
-  console.log(data);
+  const decoded = data.toString();
+  console.log(decoded);
   // const decodedToString = data.toString().split("\r\n");
   // const startLine = decodedToString.shift();
   // const [method, path, protocol] = startLine.split(" ");
