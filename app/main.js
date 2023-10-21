@@ -20,7 +20,6 @@ const HTTP_CODE = {
   OK: "200 OK",
   CREATED: "201 Created",
   NOT_FOUND: "404 Not Found",
-  ERROR: "500 Internal Server Error",
 };
 const HTTP_VERBS = {
   GET: "GET",
@@ -133,18 +132,12 @@ function processPostHttpRequest(socket, body, path, protocol) {
   if (apiAction === "files") {
     const filename = path.substring("/files/".length);
 
-    fs.writeFile(`${directory}${filename}`, body, (err) => {
-      if (err) {
-        const response = new ResponseBuilder()
-          .statusLine(protocol, HTTP_CODE.ERROR)
-          .createResponse();
-        socket.write(response);
-      }
-      const response = new ResponseBuilder()
-        .statusLine(protocol, HTTP_CODE.CREATED)
-        .createResponse();
-      socket.write(response);
-    });
+    fs.writeFile(`${directory}${filename}`, body);
+
+    const response = new ResponseBuilder()
+      .statusLine(protocol, HTTP_CODE.CREATED)
+      .createResponse();
+    socket.write(response);
   } else {
     const response = new ResponseBuilder().notFound(protocol).createResponse();
     socket.write(response);
