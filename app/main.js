@@ -133,6 +133,8 @@ function processPostHttpRequest(socket, body, path, protocol) {
     const filename = path.substring("/files/".length);
     const absPath = `${directory}${filename}`;
 
+    console.log("====");
+    console.log(filename);
     console.log(absPath);
     console.log(body);
     try {
@@ -152,6 +154,7 @@ function processPostHttpRequest(socket, body, path, protocol) {
     const response = new ResponseBuilder().notFound(protocol).createResponse();
     socket.write(response);
   }
+  socket.end();
 }
 
 class ResponseBuilder {
