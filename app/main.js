@@ -59,6 +59,7 @@ function parseHttpRequest(data) {
   console.log("2 " + reqBody);
   headers = headers.split("\n");
   console.log("3 " + headers);
+  console.log("4 " + reqBody);
   console.log("===REQUEST: \n" + decodedToString);
   return { headers, method, path, protocol };
 }
