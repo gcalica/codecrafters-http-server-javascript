@@ -41,6 +41,7 @@ const server = net.createServer((socket) => {
         break;
       case HTTP_VERBS.POST:
         processPostHttpRequest(socket, body, path, protocol);
+        break;
       default:
         break;
     }
@@ -122,7 +123,6 @@ function processGetHttpRequest(socket, headers, path, protocol) {
     const response = new ResponseBuilder().notFound(protocol).createResponse();
     socket.write(response);
   }
-  socket.end();
 }
 
 function processPostHttpRequest(socket, body, path, protocol) {
@@ -154,7 +154,6 @@ function processPostHttpRequest(socket, body, path, protocol) {
     const response = new ResponseBuilder().notFound(protocol).createResponse();
     socket.write(response);
   }
-  socket.end();
 }
 
 class ResponseBuilder {
