@@ -133,6 +133,7 @@ function processPostHttpRequest(socket, body, path, protocol) {
     const filename = path.substring("/files/".length);
     const absPath = `${directory}${filename}`;
 
+    console.log(absPath);
     try {
       fs.writeFileSync(absPath, body);
 
