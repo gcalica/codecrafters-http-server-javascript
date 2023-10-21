@@ -57,7 +57,7 @@ function parseHttpRequest(data) {
   let [headers, reqBody] = decodedToString.join("\r\n").split("\r\n\r\n");
   headers = headers.split("\n");
 
-  console.log("REQUEST: \n" + decodedToString);
+  console.log("===REQUEST: \n" + decodedToString);
   return { headers, method, path, protocol };
 }
 
@@ -78,9 +78,11 @@ function processGetHttpRequest(socket, headers, path, protocol) {
       .createResponse();
     socket.write(response);
   } else if (apiAction === "user-agent") {
+    console.log(headers);
     const userAgentHeader = headers.find((header) =>
       header.startsWith("User-Agent: "),
     );
+    console.log(userAgentHeader);
     const parsedUserAgent = userAgentHeader.split(" ")[1];
     const contentLength = parsedUserAgent.length;
 
@@ -135,7 +137,7 @@ class ResponseBuilder {
   }
 
   createResponse() {
-    console.debug("Response: \n" + this.response);
+    console.debug("===RESPONSE: \n" + this.response);
     return this.response;
   }
 
