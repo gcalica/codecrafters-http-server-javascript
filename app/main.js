@@ -132,13 +132,11 @@ function processPostHttpRequest(socket, body, path, protocol) {
   if (apiAction === "files") {
     const filename = path.substring("/files/".length);
     const absPath = `${directory}${filename}`;
-    if (fs.existsSync(absPath)) {
-      fs.writeFileSync(absPath, body);
-      const response = new ResponseBuilder()
-        .statusLine(protocol, HTTP_CODE.CREATED)
-        .createResponse();
-      socket.write(response);
-    }
+    fs.writeFileSync(absPath, body);
+    const response = new ResponseBuilder()
+      .statusLine(protocol, HTTP_CODE.CREATED)
+      .createResponse();
+    socket.write(response);
   } else {
     const response = new ResponseBuilder().notFound(protocol).createResponse();
     socket.write(response);
