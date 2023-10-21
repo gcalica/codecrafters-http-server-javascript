@@ -138,13 +138,11 @@ function processPostHttpRequest(socket, body, path, protocol) {
           .notFound(protocol)
           .createResponse();
         socket.write(response);
-        socket.end();
-      } else {
-        const response = new ResponseBuilder()
-          .statusLine(protocol, HTTP_CODE.CREATED)
-          .createResponse();
-        socket.write(response);
       }
+      const response = new ResponseBuilder()
+        .statusLine(protocol, HTTP_CODE.CREATED)
+        .createResponse();
+      socket.write(response);
     });
   } else {
     const response = new ResponseBuilder().notFound(protocol).createResponse();
