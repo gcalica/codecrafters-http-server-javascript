@@ -85,13 +85,11 @@ function processGetHttpRequest(socket, headers, path, protocol) {
       .createResponse();
     socket.write(response);
   } else if (apiAction === "user-agent") {
-    console.log(headers);
+    console.log("headers: \n ", headers);
     const userAgentHeader = headers.find((header) =>
       header.startsWith("User-Agent: "),
     );
-    console.log(userAgentHeader);
     const parsedUserAgent = userAgentHeader.split(" ")[1];
-    console.log(parsedUserAgent);
     const contentLength = parsedUserAgent.length;
 
     const response = new ResponseBuilder()
